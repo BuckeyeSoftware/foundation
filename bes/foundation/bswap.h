@@ -29,14 +29,14 @@ bes_bswap_is_big_endian(void)
 {
 	union { bes_u16 i; bes_byte c[4]; } u = { 0x0100 };
 	u.i = 0x0100;
-	return u.c[0] == 1 ? PLUCK_TRUE : PLUCK_FALSE;
+	return u.c[0] == 1 ? BES_TRUE : BES_FALSE;
 }
 
 static inline bes_bool
 bes_bswap_is_lil_endian(void)
 {
 	union { bes_u16 i; bes_byte c[4]; } u = { 0x0100 };
-	return u.c[0] == 0 ? PLUCK_TRUE : PLUCK_FALSE;
+	return u.c[0] == 0 ? BES_TRUE : BES_FALSE;
 }
 
 #endif

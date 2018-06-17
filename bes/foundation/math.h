@@ -50,6 +50,9 @@ extern "C" {
 #define BES_NAN         bes_nan() /**< Signaling NaN */
 #define BES_INFINITY    bes_inf() /**< Positive infinity */
 
+#define BES_MIN(a, b) ((a) < (b) ? (a) : (b))
+#define BES_MAX(a, b) ((a) > (b) ? (a) : (b))
+
 /** @brief Calculate sine of angle given in radians */
 BES_EXPORT bes_f32 BES_API
 bes_sinf(bes_f32 ang);
