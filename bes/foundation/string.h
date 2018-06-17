@@ -202,6 +202,12 @@ bes_atof(const char *string);
 BES_EXPORT int BES_API
 bes_atoi(const char *string);
 
+BES_EXPORT char* BES_API
+bes_stpcpy(char *BES_RESTRICT dest, const char *BES_RESTRICT src);
+
+BES_EXPORT char* BES_API
+bes_strcpy(char *BES_RESTRICT dest, const char *BES_RESTRICT src);
+
 #if defined(__cplusplus)
 }
 #endif

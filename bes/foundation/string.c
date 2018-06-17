@@ -648,3 +648,33 @@ bes_strtok(char *s, const char *sep, char **p)
 
 	return s;
 }
+
+char*
+bes_stpcpy(char *BES_RESTRICT dest, const char *BES_RESTRICT src)
+{
+	if ((bes_uintptr)src % BES_ALIGN == (bes_uintptr)dest % BES_ALIGN)
+	{
+		for (; (bes_uintptr)src % BES_ALIGN; src++, dest++)
+		{
+			if (!(*dest = *src))
+			{
+				return dest;
+			}
+		}
+		bes_size *wd = (void *)dest;
+		const bes_size *ws = (const void *)src;
+		for (; !BES_HASZERO(*ws); *wd++ = *ws++);
+		dest = (void *)wd;
+		src = (const void *)ws;
+	}
+	for (; (*dest = *src); src++, dest++);
+
+	return dest;
+}
+
+char*
+bes_strcpy(char *BES_RESTRICT dest, const char *BES_RESTRICT src)
+{
+	bes_stpcpy(dest, src);
+	return dest;
+}

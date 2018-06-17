@@ -4,9 +4,13 @@ PROFILE ?= 0
 
 rwildcard = $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 
-SRCS = $(call rwildcard, bes/, *.cpp *.c)
-OBJS = $(SRCS:.c=.o)
-DEPS = $(SRCS:.c=.d)
+FOUNDATION_SRCS = $(call rwildcard, bes/, *.c)
+FOUNDATION_OBJS = $(FOUNDATION_SRCS:.c=.o)
+FOUNDATION_DEPS = $(FOUNDATION_SRCS:.c=.d)
+
+TEST_SRCS = $(call rwildcard, tests/, *.c)
+TEST_OBJS = $(TEST_SRCS:.c=.o)
+TEST_DEPS = $(TEST_SRCS:.c=.d)
 
 # Release builds /w most aggressive optimization flags
 CFLAGS_RELEASE = \
@@ -48,30 +52,41 @@ CFLAGS_COMMON = \
 	-Winit-self \
 	-MMD
 
-CFLAGS = $(CFLAGS_COMMON) $(CFLAGS_RELEASE)
-LIB = bes-foundation.a
+TEST_CFLAGS = $(CFLAGS_COMMON) $(CFLAGS_RELEASE)
+TEST_BIN = test
+
+FOUNDATION_CFLAGS = $(CFLAGS_COMMON) $(CFLAGS_RELEASE)
+FOUNDATION_BIN = bes-foundation.a
 
 ifeq ($(PROFILE),1)
-CFLAGS = $(CFLAGS_COMMON) $(CFLAGS_PROFILE)
-LIB = bes-foundation.a
+FOUNDATION_CFLAGS = $(CFLAGS_COMMON) $(CFLAGS_PROFILE)
+FOUNDATION_BIN = bes-foundation.a
 endif
 
 ifeq ($(DEBUG), 1)
-CFLAGS = $(CFLAGS_COMMON) $(CFLAGS_DEBUG)
-LIB = bes-foundation.a
+FOUNDATION_CFLAGS = $(CFLAGS_COMMON) $(CFLAGS_DEBUG)
+FOUNDATION_BIN = bes-foundation.a
 endif
 
-all: $(LIB)
+all: $(FOUNDATION_BIN)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+bes/foundation/%.o: bes/foundation/%.c
+	$(CC) $(FOUNDATION_CFLAGS) -c -o $@ $<
 
-$(LIB): $(OBJS)
-	$(AR) -r -o $(LIB) $^
+tests/%.o: tests/%.c
+	$(CC) $(TEST_CFLAGS) -c -o $@ $<
+
+$(FOUNDATION_BIN): $(FOUNDATION_OBJS)
+	$(AR) -r -o $@ $^
+
+$(TEST_BIN): $(TEST_OBJS) $(FOUNDATION_BIN)
+	$(CC) -o $@ $^
 
 clean:
-	rm -rf $(OBJS) $(DEPS) $(LIB)
+	rm -rf $(FOUNDATION_OBJS) $(FOUNDATION_DEPS) $(FOUNDATION_BIN)
+	rm -rf $(TEST_OBJS) $(TEST_DEPS) $(TEST_BIN)
 
 .PHONY: clean
 
--include $(DEPS)
+-include $(FOUNDATION_DEPS)
+-include $(TEST_DEPS)
