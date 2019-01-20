@@ -44,6 +44,7 @@ extern bes_bool test_bswap_command(bes_size*, bes_size*); /* bswap.c */
 extern bes_bool test_memory_command(bes_size*, bes_size*); /* memory.c */
 extern bes_bool test_buffer_command(bes_size*, bes_size*); /* buffer.c */
 extern bes_bool test_string_command(bes_size*, bes_size*); /* string.c */
+extern bes_bool test_stream_command(bes_size*, bes_size*); /* stream.c */
 
 static const test_command test_commands[] =
 {
@@ -51,7 +52,8 @@ static const test_command test_commands[] =
 	{ "bswap", test_bswap_command },
 	{ "memory", test_memory_command },
 	{ "buffer", test_buffer_command },
-	{ "string", test_string_command }
+	{ "string", test_string_command },
+	{ "stream", test_stream_command }
 };
 
 int main(int argc, char **argv)
