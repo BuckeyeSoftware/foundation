@@ -66,6 +66,7 @@
 #elif TARGET_OS_IOS             /* Defined by TargetConditionals.h */
 #define BES_PLATFORM_IOS
 #endif
+#else
 #error Unrecognized or unsupported platform.
 #endif
 
