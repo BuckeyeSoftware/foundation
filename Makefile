@@ -77,7 +77,7 @@ tests/%.o: tests/%.c
 	$(CC) $(TEST_CFLAGS) -c -o $@ $<
 
 $(FOUNDATION_BIN): $(FOUNDATION_OBJS)
-	$(AR) -r -o $@ $^
+	$(AR) -r $@ $^
 
 $(TEST_BIN): $(TEST_OBJS) $(FOUNDATION_BIN)
 	$(CC) -o $@ $^
